@@ -1,0 +1,7 @@
+-----------------------------
+HW 1 Grade
+Graded by: Ashutosh Kumar Nirala
+Email: aknirala@iastate.edu
+Office Hours: Mon 4:10-5:00pm, Tue 3:10-4:00pm
+-----------------------------
+Automated Test Output:

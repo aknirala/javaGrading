@@ -1,0 +1,11 @@
+-----------------------------
+Automated Tests
+ = PLACEHOLDER02 / 100
+ Issues:
+ + 
+-----------------------------
+TOTAL GRADE
+ = PLACEHOLDER03 / 100
+-----------------------------
+Comments:
+ PLACEHOLDER04

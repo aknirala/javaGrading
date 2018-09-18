@@ -116,9 +116,16 @@ do
   sed -i '' "s/PLACEHOLDER03/$score/g" "$grades/$sName".txt
   sed -i '' "s/PLACEHOLDER04/$autoComment/g" "$grades/$sName".txt
   
-  echo "Output added. Now cleaning the tmp folder"
+
   echo "$score $sName "$((counter-1)) >> "$grades"/scores.txt
-  
+  echo "Output added. Now checking for tags"
+
+  echo "#Checking the author tag here."
+  authorOp="$(java checkAuthor $tmpFolder/$package $sName)" 
+  echo "Op is: $authorOp"
+  echo "$authorOp" >> "$grades"/scores.txt
+
+  echo "Output added. Now cleaning the tmp folder"  
 
   rm -rf $tmpFolder/*
   rm -rf $tmpFolder/.*

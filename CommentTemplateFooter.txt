@@ -6,6 +6,24 @@ Automated Tests
 -----------------------------
 Manual Tests
  = 0 / 50
+ Short answers on Big-O: ( /20)
+   2.1.1 ( /4)
+   2.1.2 ( /4)
+   2.1.3 ( /4)
+   2.1.4 ( /4)
+   2.1.5 ( /4)
+ Checking if implementation is indeed O(n) and O(n^2): ( /30)
+   2.2.1.1 ( /5)
+   2.2.1.2 ( /10)
+   2.2.2.1 ( /5)
+   2.2.2.2 ( /10)
+
+ packaging ( /4)
+
+ @author tags  ( /3)
+
+ javadoc ( /3)
+
  Issues:
  + 
 -----------------------------

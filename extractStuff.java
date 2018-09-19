@@ -1,4 +1,4 @@
-import java.io.BufferedReader;
+import	java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,27 +11,15 @@ import java.util.ArrayList;
  * @author aknirala
  *
  */
-public class checkAuthor {
+public class extractStuff {
 	
-	/**
-	 * A function which will simply extract all the author tags values given the java file.
-	 * It simply check each line for @author tag and returns whatever is after that (after trimming it).
-	 * @param fPath
-	 * @return
-	 */
-	public static ArrayList<String> getAuthors(File file){
-		ArrayList<String> authors = new ArrayList();
+	public static String getContents(File file){
+		StringBuffer cont = new StringBuffer();
 		BufferedReader br;
 		try {
 			br = new BufferedReader(new FileReader(file));
 			String line = null;
-			while ((line = br.readLine()) != null) {
-				if(line.toLowerCase().contains("@author")) {
-					line = line.toLowerCase();
-					int sIdx = line.indexOf("@author");
-					authors.add(line.substring(sIdx + "@author".length()).trim());
-				}
-			}
+			while ((line = br.readLine()) != null) cont.append(line).append("\n");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,7 +28,24 @@ public class checkAuthor {
 			e.printStackTrace();
 		}
 		 
-		
+		return cont.toString();
+	}
+	
+	/**
+	 * A function which will simply extract all the author tags values given the java file.
+	 * It simply check each line for @author tag and returns whatever is after that (after trimming it).
+	 * @param fPath
+	 * @return
+	 */
+	public static ArrayList<String> getAuthors(String fileLines){
+		ArrayList<String> authors = new ArrayList();
+		for(String line:fileLines.split("\n")) {
+			if(line.toLowerCase().contains("@author")) {
+				line = line.toLowerCase();
+				int sIdx = line.indexOf("@author");
+				authors.add(line.substring(sIdx + "@author".length()).trim());
+			}
+		}
 		return authors;
 	}
 	
@@ -91,6 +96,18 @@ public class checkAuthor {
 		return sb.toString();
 	}
 	
+	public static String getImports(String fileLines) {
+		//From: https://stackoverflow.com/questions/9205988/writing-a-java-program-to-remove-the-comments-in-same-java-program
+		String codeLines = fileLines.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)","");
+		//System.out.print(" >>>>> "+codeLines);
+		ArrayList<String> imports = new ArrayList();
+		for(String line:codeLines.split("\n")) {
+			line = line.trim();
+			if(line.startsWith("import ")) imports.add(line);
+		}
+		return imports.toString();
+	}
+	
 	public static void main(String []args) {
 		if(args == null || args.length < 2) {
 			System.out.println("Insufficient parameters passed. Expected two parameters path of the file (wrt tmp folder (package path)) followed by name of the zip."
@@ -107,12 +124,20 @@ public class checkAuthor {
 		        return name.endsWith(".java");
 		    }
 		});
-		
+		System.out.println("-----------AUTHORS AND TAGS INFO-------------------");
 		ArrayList<String> ignoreList = ignoreFileList();//new ArrayList();//
 		String studName = args[1].split("_")[0].toLowerCase();
 		for(File file:files) {
-			if(!ignoreList.contains(file.getName())) {
-				System.out.println(file.getName() +" : "+getVerdict(getAuthors(file), studName));
+			if(!ignoreList.contains(file.getName())) 
+			{
+				String contents = getContents(file);
+				String cont = "";
+				System.out.println("---------FILE: "
+									+ file.getName() 
+									+" : "
+									+getVerdict(getAuthors(contents), studName));
+				System.out.println("IMPORTS ARE: ");
+				System.out.print(getImports(contents));
 			}
 		}
 		

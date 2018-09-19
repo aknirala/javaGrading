@@ -121,9 +121,9 @@ do
   echo "Output added. Now checking for tags"
 
   echo "#Checking the author tag here."
-  authorOp="$(java checkAuthor $tmpFolder/$package $sName)" 
-  echo "Op is: $authorOp"
-  echo "$authorOp" >> "$grades"/scores.txt
+  authorImports="$(java extractStuff $tmpFolder/$package $sName)" 
+  echo "Op is: $authorImports"
+  echo "$authorImports" >> "$grades/$sName".txt
 
   echo "Output added. Now cleaning the tmp folder"  
 

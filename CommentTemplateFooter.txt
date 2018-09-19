@@ -1,11 +1,11 @@
 -----------------------------
 Automated Tests
- = PLACEHOLDER02 / 90
+ = PLACEHOLDER02 / 50
  Issues:
  + 
 -----------------------------
 Manual Tests
- = 10 / 10
+ = 0 / 50
  Issues:
  + 
 -----------------------------

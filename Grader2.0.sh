@@ -2,16 +2,16 @@ set x
 # You may need to make this file executable (chmod 775 Grader2.0.sh)
 # To run just do (./Grader2.0.sh or sh Grader2.0.sh)
 #Path for jUnits test cases for grading (U need to change this)
-graderFiles="hw02_grading/src/edu/iastate/cs228/hw02/grading/*.java"
+graderFiles="../hw03_grading/src/edu/iastate/cs228/hw03/grading/*.java"
 #Path for provided solution (U need to change this)
-solutionFiles="hw02_grading/src/edu/iastate/cs228/hw02/solution/*.java"
+solutionFiles="../hw03_grading/src/edu/iastate/cs228/hw03/solution/*.java"
 
 
 #class which will run the test cases (Do NOT change this, except hw02 part)
-graderClass="edu.iastate.cs228.hw02.grading.AutomatedJUnitRunner"
+graderClass="edu.iastate.cs228.hw03.grading.AutomatedJUnitRunner"
 
 #Submission package files (Do NOT change this, except hw02 part)
-subPkgFiles="edu/iastate/cs228/hw02/*.java"
+subPkgFiles="edu/iastate/cs228/hw03/*.java"
 
 #Do not change this
 junitPath="junit-platform-console-standalone-1.3.0.jar"
@@ -20,13 +20,13 @@ junitPath="junit-platform-console-standalone-1.3.0.jar"
 tmpFolder="tmp"
 
 #This is location of students "zip" submissions. (U need to change this)
-subPath="submissions"
+subPath="../submissions"
 
 #Output will be created in this folder. Do not change this.
 grades="grades"
 
 #Do NOT change this, except hw02 part 
-package="edu/iastate/cs228/hw02/"
+package="edu/iastate/cs228/hw03/"
 
 
 #Splited into two parts as output is multiline which is non-trivial to handle with sed
@@ -47,7 +47,8 @@ then
   mkdir $grades
 fi
 
-
+echo "Compiling class to check author tags"
+javac -d . extractStuff.java
 counter=1
 for subZip in "$subPath"/*.zip
 do
@@ -66,9 +67,15 @@ do
   sName=$(basename "$subZip" ".zip")
   unzip "$tmpFolder"/"$sName" -d "$tmpFolder"/
   
-  echo "#Compile the submission files into tmp" #Including junit as well for future cases.
   mkdir -p "$tmpFolder/$package"
   find $tmpFolder -type f -name '*.java' -exec cp {} "$tmpFolder/$package" \;
+  echo "Now ensuring that BagInterface.java exist" #TODO: In future take it from =ignorefiles list
+  if [ ! -f "$tmpFolder/$package/BagInterface.java" ]
+  then
+    echo "Copying BagInterface as it didn't exist."
+    cp "BagInterface.java" "$tmpFolder/$package/"
+  fi
+  echo "#Compile the submission files into tmp" #Including junit as well for future cases.
   javac -d "$tmpFolder"/ -cp "$junitPath:$tmpFolder"/ "$tmpFolder"/$subPkgFiles
 
   echo "#Now Compile the solution files into tmp"
@@ -88,7 +95,7 @@ do
   echo "Template copied to $grades/$sName".txt
   echo "$outpt" >> "$grades/$sName".txt
   cat $templateFileFooter >> "$grades/$sName".txt
-  sed -i '' "s/PLACEHOLDER02/$score/g" "$grades/$sName".txt
+  sed -i "s/PLACEHOLDER02/$score/g" "$grades/$sName".txt
   autoComment="Need to focus a bit more on testing."
   if [ $score -lt 50 ]
     then
@@ -112,9 +119,9 @@ do
   fi
   #Adding a score of 10 by default as most students will do it correctly.
   #But please note u need to change this as per what students have really done.
-  score=$((score+10))
-  sed -i '' "s/PLACEHOLDER03/$score/g" "$grades/$sName".txt
-  sed -i '' "s/PLACEHOLDER04/$autoComment/g" "$grades/$sName".txt
+  score=$((score+0))
+  sed -i "s/PLACEHOLDER03/$score/g" "$grades/$sName".txt
+  sed -i "s/PLACEHOLDER04/$autoComment/g" "$grades/$sName".txt
   
 
   echo "$score $sName "$((counter-1)) >> "$grades"/scores.txt
@@ -130,6 +137,6 @@ do
   rm -rf $tmpFolder/*
   rm -rf $tmpFolder/.*
   #To delete hidden files.
-
+  break
 done
 

@@ -137,6 +137,6 @@ do
   rm -rf $tmpFolder/*
   rm -rf $tmpFolder/.*
   #To delete hidden files.
-  break
+  #break
 done
 
